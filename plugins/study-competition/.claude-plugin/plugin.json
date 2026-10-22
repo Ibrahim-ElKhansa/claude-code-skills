@@ -1,0 +1,10 @@
+{
+  "name": "study-competition",
+  "version": "1.0.0",
+  "description": "Studies the market around a business idea, with competitors, prices, their ads and bad reviews, the gaps nobody fills, selling points and video hooks, and where the idea already works abroad.",
+  "author": { "name": "Ibrahim El Khansa", "url": "https://ibrahimelkhansa.com" },
+  "homepage": "https://ibrahimelkhansa.com/claude-code-skills/study-competition",
+  "repository": "https://github.com/Ibrahim-ElKhansa/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["market research", "competitors", "startup"]
+}

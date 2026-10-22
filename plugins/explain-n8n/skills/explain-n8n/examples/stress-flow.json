@@ -1,0 +1,721 @@
+{
+ "schema": "explain-flow/1",
+ "title": "Renderer stress test",
+ "pageTitle": "Explain Stress Test",
+ "summary": "A made-up flow that pushes the renderer: twenty steps, a six-way [[Switch]], a loop, a long jump, an error path and three levels of sub-workflow.",
+ "takeaway": "If this page reads well on a phone, a real one will too.",
+ "source": {
+  "repo": "concept"
+ },
+ "entry": "main",
+ "canvases": [
+  {
+   "id": "main",
+   "title": "Twenty steps",
+   "intro": "Every node type and edge kind on one canvas.",
+   "nodes": [
+    {
+     "id": "t",
+     "type": "trigger",
+     "name": "Start",
+     "col": 0,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Start.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "sw",
+     "type": "decision",
+     "name": "Six-way switch",
+     "col": 1,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Six-way switch.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     },
+     "outputs": [
+      {
+       "id": "o1"
+      },
+      {
+       "id": "o2"
+      },
+      {
+       "id": "o3"
+      },
+      {
+       "id": "o4"
+      },
+      {
+       "id": "o5"
+      },
+      {
+       "id": "o6"
+      }
+     ]
+    },
+    {
+     "id": "a1",
+     "type": "action",
+     "name": "Branch 1",
+     "col": 2,
+     "lane": -2,
+     "explain": {
+      "what": "Stand-in step Branch 1.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "a2",
+     "type": "action",
+     "name": "Branch 2",
+     "col": 2,
+     "lane": -1,
+     "explain": {
+      "what": "Stand-in step Branch 2.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "a3",
+     "type": "action",
+     "name": "Forty characters long name for the label",
+     "col": 2,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Forty characters long name for the label.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "a4",
+     "type": "action",
+     "name": "Branch 4",
+     "col": 2,
+     "lane": 1,
+     "explain": {
+      "what": "Stand-in step Branch 4.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "a5",
+     "type": "action",
+     "name": "Branch 5",
+     "col": 2,
+     "lane": 2,
+     "explain": {
+      "what": "Stand-in step Branch 5.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "a6",
+     "type": "action",
+     "name": "Branch 6",
+     "col": 2,
+     "lane": 3,
+     "explain": {
+      "what": "Stand-in step Branch 6.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "m",
+     "type": "merge",
+     "name": "Merge three",
+     "col": 3,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Merge three.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "x3",
+     "type": "data",
+     "name": "Collect four and five",
+     "col": 3,
+     "lane": 2,
+     "explain": {
+      "what": "Stand-in step Collect four and five.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "y3",
+     "type": "external",
+     "name": "Call out for six",
+     "col": 3,
+     "lane": 4,
+     "explain": {
+      "what": "Stand-in step Call out for six.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "lp",
+     "type": "loop",
+     "name": "Loop the rows",
+     "col": 4,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Loop the rows.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "b",
+     "type": "action",
+     "name": "Loop body",
+     "col": 5,
+     "lane": 1,
+     "explain": {
+      "what": "Stand-in step Loop body.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "dn",
+     "type": "action",
+     "name": "After the loop",
+     "col": 5,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step After the loop.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "sub1",
+     "type": "subflow",
+     "name": "Go one level down",
+     "col": 6,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Go one level down.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     },
+     "subflow": "level2"
+    },
+    {
+     "id": "e6",
+     "type": "ai",
+     "name": "Summarise",
+     "col": 6,
+     "lane": 2,
+     "explain": {
+      "what": "Stand-in step Summarise.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "end",
+     "type": "end",
+     "name": "Finished",
+     "col": 7,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Finished.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "w7",
+     "type": "wait",
+     "name": "Wait an hour",
+     "col": 7,
+     "lane": 1,
+     "explain": {
+      "what": "Stand-in step Wait an hour.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "ai7",
+     "type": "ai",
+     "name": "Classify",
+     "col": 7,
+     "lane": 2,
+     "explain": {
+      "what": "Stand-in step Classify.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "ext7",
+     "type": "external",
+     "name": "Post a webhook",
+     "col": 7,
+     "lane": 3,
+     "explain": {
+      "what": "Stand-in step Post a webhook.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     },
+     "errorOutput": true
+    }
+   ],
+   "edges": [
+    {
+     "from": "t",
+     "to": "sw"
+    },
+    {
+     "from": "sw",
+     "out": "o1",
+     "to": "a1"
+    },
+    {
+     "from": "sw",
+     "out": "o2",
+     "to": "a2"
+    },
+    {
+     "from": "sw",
+     "out": "o3",
+     "to": "a3"
+    },
+    {
+     "from": "sw",
+     "out": "o4",
+     "to": "a4"
+    },
+    {
+     "from": "sw",
+     "out": "o5",
+     "to": "a5"
+    },
+    {
+     "from": "sw",
+     "out": "o6",
+     "to": "a6"
+    },
+    {
+     "from": "a1",
+     "to": "m",
+     "in": "in1"
+    },
+    {
+     "from": "a2",
+     "to": "m",
+     "in": "in2"
+    },
+    {
+     "from": "a3",
+     "to": "m",
+     "in": "in1"
+    },
+    {
+     "from": "t",
+     "to": "m",
+     "in": "in2",
+     "label": "skips ahead"
+    },
+    {
+     "from": "a4",
+     "to": "x3"
+    },
+    {
+     "from": "a5",
+     "to": "x3"
+    },
+    {
+     "from": "a6",
+     "to": "y3"
+    },
+    {
+     "from": "m",
+     "to": "lp"
+    },
+    {
+     "from": "x3",
+     "to": "lp"
+    },
+    {
+     "from": "lp",
+     "out": "loop",
+     "to": "b"
+    },
+    {
+     "from": "b",
+     "to": "lp",
+     "label": "next row"
+    },
+    {
+     "from": "lp",
+     "out": "done",
+     "to": "dn"
+    },
+    {
+     "from": "dn",
+     "to": "sub1"
+    },
+    {
+     "from": "sub1",
+     "to": "end"
+    },
+    {
+     "from": "y3",
+     "to": "e6"
+    },
+    {
+     "from": "e6",
+     "to": "w7"
+    },
+    {
+     "from": "e6",
+     "to": "ai7"
+    },
+    {
+     "from": "y3",
+     "to": "ext7"
+    },
+    {
+     "from": "ext7",
+     "out": "main",
+     "to": "sw",
+     "label": "retry from the switch"
+    },
+    {
+     "from": "ext7",
+     "out": "error",
+     "to": "end",
+     "kind": "error"
+    }
+   ],
+   "stickies": [
+    {
+     "col": 0,
+     "lane": 2,
+     "w": 1.6,
+     "h": 1.2,
+     "color": "blue",
+     "text": "A blue sticky with `code` and **bold**."
+    }
+   ],
+   "tour": [
+    {
+     "title": "Overview",
+     "text": "The switch fans out six ways."
+    },
+    {
+     "node": "sw",
+     "title": "The switch",
+     "text": "Six outputs, one per branch."
+    },
+    {
+     "node": "lp",
+     "title": "The loop",
+     "text": "Runs the body once per row."
+    },
+    {
+     "node": "sub1",
+     "title": "Down a level",
+     "text": "Opens [[#l2-sub]]'s canvas."
+    }
+   ],
+   "runs": [
+    {
+     "id": "r",
+     "name": "Branch three",
+     "steps": [
+      {
+       "node": "t"
+      },
+      {
+       "node": "sw",
+       "out": "o3",
+       "items": 1
+      },
+      {
+       "node": "a3",
+       "items": 1
+      },
+      {
+       "node": "m",
+       "items": 1
+      },
+      {
+       "node": "lp",
+       "out": "loop",
+       "items": 4
+      },
+      {
+       "node": "b",
+       "items": 4
+      },
+      {
+       "node": "lp",
+       "out": "done",
+       "items": 4
+      },
+      {
+       "node": "dn",
+       "items": 4
+      },
+      {
+       "node": "sub1",
+       "items": 4
+      },
+      {
+       "node": "end",
+       "items": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "level2",
+   "title": "Level two",
+   "intro": "One level down.",
+   "nodes": [
+    {
+     "id": "l2-start",
+     "type": "trigger",
+     "name": "Called",
+     "col": 0,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Called.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "l2-sub",
+     "type": "subflow",
+     "name": "Down again",
+     "col": 1,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Down again.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     },
+     "subflow": "level3"
+    },
+    {
+     "id": "l2-end",
+     "type": "end",
+     "name": "Back up",
+     "col": 2,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Back up.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    }
+   ],
+   "edges": [
+    {
+     "from": "l2-start",
+     "to": "l2-sub"
+    },
+    {
+     "from": "l2-sub",
+     "to": "l2-end"
+    }
+   ],
+   "tour": [
+    {
+     "node": "l2-start",
+     "title": "Start",
+     "text": "Called from the main canvas."
+    },
+    {
+     "node": "l2-sub",
+     "title": "Deeper",
+     "text": "Opens level three."
+    },
+    {
+     "node": "l2-end",
+     "title": "End",
+     "text": "Back up."
+    }
+   ]
+  },
+  {
+   "id": "level3",
+   "title": "Level three",
+   "intro": "The deepest level allowed.",
+   "nodes": [
+    {
+     "id": "l3-start",
+     "type": "trigger",
+     "name": "Called",
+     "col": 0,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Called.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    },
+    {
+     "id": "l3-do",
+     "type": "action",
+     "name": "Do the thing",
+     "col": 1,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Do the thing.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     },
+     "assumed": {
+      "why": "a stand-in step"
+     }
+    },
+    {
+     "id": "l3-off",
+     "type": "action",
+     "name": "Old path",
+     "col": 1,
+     "lane": 1,
+     "explain": {
+      "what": "Stand-in step Old path.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     },
+     "disabled": {
+      "why": "switched off"
+     }
+    },
+    {
+     "id": "l3-end",
+     "type": "end",
+     "name": "Done",
+     "col": 2,
+     "lane": 0,
+     "explain": {
+      "what": "Stand-in step Done.",
+      "why": "Exercises the renderer.",
+      "how": [
+       "Nothing real happens here."
+      ]
+     }
+    }
+   ],
+   "edges": [
+    {
+     "from": "l3-start",
+     "to": "l3-do"
+    },
+    {
+     "from": "l3-do",
+     "to": "l3-end"
+    },
+    {
+     "from": "l3-start",
+     "to": "l3-off",
+     "kind": "async"
+    }
+   ],
+   "tour": [
+    {
+     "node": "l3-start",
+     "title": "Start",
+     "text": "The bottom of the stack."
+    },
+    {
+     "node": "l3-do",
+     "title": "Assumed",
+     "text": "Dashed border."
+    },
+    {
+     "node": "l3-off",
+     "title": "Off",
+     "text": "Greyed out."
+    },
+    {
+     "node": "l3-end",
+     "title": "End",
+     "text": "Done."
+    }
+   ]
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Switch",
+   "plain": "A decision with more than two ways out.",
+   "n8n": "The Switch node."
+  }
+ ]
+}

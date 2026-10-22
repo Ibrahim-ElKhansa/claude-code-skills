@@ -1,0 +1,10 @@
+{
+  "name": "explain-n8n",
+  "version": "1.0.0",
+  "description": "Explains a piece of code as an interactive n8n style workflow page, with steps, branches, loops, real code lines and example runs.",
+  "author": { "name": "Ibrahim El Khansa", "url": "https://ibrahimelkhansa.com" },
+  "homepage": "https://ibrahimelkhansa.com/claude-code-skills/explain-n8n",
+  "repository": "https://github.com/Ibrahim-ElKhansa/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["code explanation", "n8n", "diagram"]
+}

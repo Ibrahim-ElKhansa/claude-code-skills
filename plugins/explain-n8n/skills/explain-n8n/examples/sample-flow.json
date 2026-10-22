@@ -1,0 +1,665 @@
+{
+  "schema": "explain-flow/1",
+  "title": "How trim_clip.py keeps the last 30 seconds of a video",
+  "pageTitle": "Trim Clip Flow",
+  "summary": "trim_clip.py makes a short, shareable copy of a video: it keeps only the last N seconds (30 by default) and compresses them into a new MP4. It finds the videos, asks [[ffprobe]] what is inside each one, decides where to cut, and has [[ffmpeg]] write the new clip, which it then reads back to check. The encode has its own sub-workflow, where the picture size and the [[Audio tracks]] are handled.",
+  "takeaway": "The original is only ever read: `-sseof` makes ffmpeg start near the end, and every result is a new file under a name that is not taken yet.",
+  "source": {
+    "repo": "claude-code-skills · trim-clip",
+    "root": "../../../../trim-clip/skills/trim-clip",
+    "readFiles": ["trim_clip.py"]
+  },
+  "entry": "main",
+  "canvases": [
+    {
+      "id": "main",
+      "title": "From your recordings to a short clip",
+      "intro": "The whole run, one video at a time. The encode itself is a sub-workflow: open **Make the new clip** to see inside.",
+      "nodes": [
+        {
+          "id": "start",
+          "type": "trigger",
+          "name": "Run the script",
+          "subtitle": "python trim_clip.py",
+          "icon": "terminal",
+          "col": 0,
+          "lane": 0,
+          "explain": {
+            "what": "You start the script from a terminal. It reads the options: which videos, how many seconds to keep, the size limit and the quality.",
+            "why": "Every later step reads these options, so they are fixed once, at the start.",
+            "how": [
+              "Pass video paths, or `--latest N` to take your N newest recordings.",
+              "`--seconds` sets how much of the end to keep (30 by default).",
+              "`--max-height` and `--crf` set the size and the quality of the new file.",
+              "`--list` only shows what would be trimmed and encodes nothing."
+            ],
+            "n8n": "A Manual Trigger with a small form: the options are the fields you fill in before the run."
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [109, 121], "symbol": "--seconds"}
+          ],
+          "data": {
+            "output": {"videos": [], "latest": 2, "match": "Game", "seconds": 30, "max_height": 1080, "crf": 23, "list": false}
+          }
+        },
+        {
+          "id": "find",
+          "type": "action",
+          "name": "Find the videos",
+          "subtitle": "latest_videos()",
+          "icon": "search",
+          "col": 1,
+          "lane": 0,
+          "explain": {
+            "what": "Builds the list of videos to trim: the paths you gave, plus the newest recordings in your Videos folder when you asked for `--latest`.",
+            "why": "The script stops before any work if the list is empty or a path is wrong, so a typo never leaves a half-finished run.",
+            "how": [
+              "Walk the Videos folder and keep files with a video extension (.mp4, .mkv, .mov and a few more).",
+              "With `--match`, keep only paths that contain that text.",
+              "Sort newest first and take the first N.",
+              "Stop with a message if nothing is left or a path does not exist."
+            ],
+            "n8n": "A Read Files node, then Filter, Sort and Limit to N items.",
+            "gotchas": [
+              "On Windows the Videos and Desktop folders are read from the registry, so a moved folder is still found. Elsewhere the script uses the folder of that name in your home directory."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [123, 131], "symbol": "latest_videos(root"},
+            {"file": "trim_clip.py", "lines": [60, 65], "symbol": "def latest_videos"}
+          ],
+          "data": {
+            "input": {"latest": 2, "match": "Game"},
+            "output": {"videos": ["C:/Users/you/Videos/Game/boss-fight.mp4", "C:/Users/you/Videos/Game/quick-win.mp4"]}
+          }
+        },
+        {
+          "id": "each",
+          "type": "loop",
+          "name": "For each video",
+          "icon": "repeat",
+          "col": 2,
+          "lane": 0,
+          "explain": {
+            "what": "Takes the videos one at a time. Each one goes through the steps on the right, then the loop moves on to the next.",
+            "why": "Every video needs its own length check, its own file name and its own encode.",
+            "how": [
+              "Hand the next video to the probe step through the `loop` output.",
+              "When the last one is done, leave through the `done` output.",
+              "With `--list`, print each video and skip the encode."
+            ],
+            "n8n": "The Loop Over Items node with a batch size of 1.",
+            "gotchas": [
+              "A failed encode stops the whole script, so the videos after it are not trimmed."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [137, 142], "symbol": "for src in videos"}
+          ]
+        },
+        {
+          "id": "done",
+          "type": "end",
+          "name": "All clips made",
+          "icon": "flag",
+          "col": 3,
+          "lane": -1,
+          "explain": {
+            "what": "Every video has been handled. Each new clip sits in the output folder, and every original is unchanged.",
+            "why": "Nothing is left to do: the lines printed along the way are the report.",
+            "how": [
+              "The script exits normally."
+            ]
+          }
+        },
+        {
+          "id": "probe",
+          "type": "action",
+          "name": "Probe length and audio",
+          "subtitle": "ffprobe",
+          "icon": "film",
+          "col": 3,
+          "lane": 0,
+          "explain": {
+            "what": "Asks [[ffprobe]] three things about the video: how long it is, how tall the picture is, and how many [[Audio tracks]] it has.",
+            "why": "The next steps depend on these numbers: the length decides the cut, the height decides the scaling, the tracks decide the audio mix.",
+            "how": [
+              "Run ffprobe and ask for the duration, and for each stream its type and height, as JSON.",
+              "Ignore a cover picture that is stored as a video stream.",
+              "Count the audio streams.",
+              "Print a one-line summary of the original."
+            ],
+            "n8n": "An Execute Command node that runs ffprobe, then a Code node that reads its JSON.",
+            "gotchas": [
+              "If ffmpeg is not on your PATH, `find_tool` also looks in the winget install folder on Windows before giving up with an install hint."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [47, 57], "symbol": "def probe"},
+            {"file": "trim_clip.py", "lines": [138, 140], "symbol": "probe(ffprobe, src)"},
+            {"file": "trim_clip.py", "lines": [34, 44], "symbol": "def find_tool"}
+          ],
+          "data": {
+            "input": {"video": "C:/Users/you/Videos/Game/boss-fight.mp4"},
+            "output": {"duration": 184.2, "height": 1440, "audio_tracks": 2}
+          }
+        },
+        {
+          "id": "long",
+          "type": "decision",
+          "name": "Longer than N seconds?",
+          "icon": "git-branch",
+          "col": 4,
+          "lane": 0,
+          "outputs": [
+            {"id": "yes", "label": "cut"},
+            {"id": "no", "label": "keep all"}
+          ],
+          "explain": {
+            "what": "Compares the video's length with the seconds you asked to keep (30 by default).",
+            "why": "You cannot keep the last 30 seconds of a 20-second clip. A short clip is kept whole and only compressed.",
+            "how": [
+              "Longer than N: take `yes` and cut to the last N seconds.",
+              "N seconds or shorter: take `no`, print a note and keep everything."
+            ],
+            "n8n": "An IF node on `duration > seconds`."
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [80, 81], "symbol": "if duration > seconds"},
+            {"file": "trim_clip.py", "lines": [143, 144], "symbol": "duration <= args.seconds"}
+          ],
+          "data": {
+            "input": {"duration": 184.2, "seconds": 30},
+            "output": {"branch": "yes"}
+          }
+        },
+        {
+          "id": "window",
+          "type": "action",
+          "name": "Start N seconds before the end",
+          "subtitle": "-sseof -30",
+          "icon": "clock",
+          "col": 5,
+          "lane": 0,
+          "explain": {
+            "what": "Tells ffmpeg to start reading N seconds before the end of the file, so only the last N seconds reach the encoder.",
+            "why": "Seeking from the end skips the rest of the recording, so a long video is not decoded from its first frame.",
+            "how": [
+              "Add [[-sseof]] `-30` before `-i`, so it applies to the input file.",
+              "ffmpeg jumps near that point and drops the frames before it, so the cut is exact.",
+              "The original file is only read, never changed."
+            ],
+            "n8n": "Like a start offset on a read step, counted back from the end.",
+            "gotchas": [
+              "`-sseof` must come before `-i`. After it, ffmpeg treats it as an output option and stops with an error."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [79, 82], "symbol": "-sseof"}
+          ],
+          "data": {
+            "input": {"duration": 184.2, "seconds": 30},
+            "output": {"args": ["-sseof", "-30", "-i", "C:/Users/you/Videos/Game/boss-fight.mp4"]}
+          }
+        },
+        {
+          "id": "keep-all",
+          "type": "action",
+          "name": "Keep the whole clip",
+          "icon": "check",
+          "col": 5,
+          "lane": 1,
+          "explain": {
+            "what": "Leaves out the seek, so ffmpeg reads the clip from its first frame. It is still compressed and resized like any other.",
+            "why": "Cutting makes no sense on a clip that is already short, and this way every result comes out in the same size and format.",
+            "how": [
+              "Print `shorter than 30s: keeping all of it, compressed`.",
+              "Build the command without `-sseof`."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [143, 144], "symbol": "keeping all of it"}
+          ],
+          "data": {
+            "input": {"duration": 21.6, "seconds": 30},
+            "output": {"args": ["-i", "C:/Users/you/Videos/Game/quick-win.mp4"]}
+          }
+        },
+        {
+          "id": "make",
+          "type": "subflow",
+          "name": "Make the new clip",
+          "subtitle": "free_path() and trim()",
+          "icon": "film",
+          "subflow": "encode",
+          "col": 6,
+          "lane": 0,
+          "explain": {
+            "what": "Picks a file name that is not taken and runs ffmpeg to write the new MP4. The sub-workflow shows each choice inside.",
+            "why": "The encode makes its own small decisions (picture size, audio), so they get a canvas of their own.",
+            "how": [
+              "Pick a free name in the output folder (your Desktop by default).",
+              "Build the ffmpeg command and run it.",
+              "Open the sub-workflow for the detail."
+            ],
+            "n8n": "An Execute Workflow node that calls a sub-workflow and waits for it."
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [145, 146], "symbol": "trim(ffmpeg"}
+          ],
+          "data": {
+            "input": {"video": "C:/Users/you/Videos/Game/boss-fight.mp4", "seconds": 30},
+            "output": {"clip": "C:/Users/you/Desktop/boss-fight - last 30s.mp4"}
+          }
+        },
+        {
+          "id": "verify",
+          "type": "action",
+          "name": "Check the new clip",
+          "subtitle": "ffprobe again",
+          "icon": "check",
+          "col": 7,
+          "lane": 0,
+          "explain": {
+            "what": "Probes the new file and prints its length, height and size, so you can see the cut worked.",
+            "why": "Reading the result back is a cheap proof: a 30-second cut should report about 30 seconds at 1080p.",
+            "how": [
+              "Run the same probe on the new file.",
+              "Print the new path, the length, the height and the size in MB."
+            ],
+            "n8n": "A second Execute Command node that reads the output back, like a check after a write.",
+            "gotchas": [
+              "The length can differ by a frame or so, because video is cut on whole frames."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [147, 148], "symbol": "out_duration"},
+            {"file": "trim_clip.py", "lines": [105, 106], "symbol": "def mb"}
+          ],
+          "data": {
+            "input": {"clip": "C:/Users/you/Desktop/boss-fight - last 30s.mp4"},
+            "output": {"duration": 30.0, "height": 1080, "size": "11.8 MB"}
+          }
+        }
+      ],
+      "edges": [
+        {"from": "start", "to": "find"},
+        {"from": "find", "to": "each"},
+        {"from": "each", "out": "loop", "to": "probe"},
+        {"from": "each", "out": "done", "to": "done"},
+        {"from": "probe", "to": "long"},
+        {"from": "long", "out": "yes", "to": "window"},
+        {"from": "long", "out": "no", "to": "keep-all"},
+        {"from": "window", "to": "make"},
+        {"from": "keep-all", "to": "make"},
+        {"from": "make", "to": "verify"},
+        {"from": "verify", "to": "each", "label": "next video"}
+      ],
+      "stickies": [
+        {
+          "col": 0,
+          "lane": 1,
+          "w": 1.8,
+          "h": 1.1,
+          "color": "yellow",
+          "text": "The original video is only read. Every result is a **new file**, and ffmpeg's `-n` flag refuses to overwrite one."
+        }
+      ],
+      "tour": [
+        {
+          "title": "The idea",
+          "text": "Game recorders save long videos, but the moment worth sharing is usually at the end. This script keeps only the last N seconds and makes them small enough to send."
+        },
+        {"node": "start", "title": "You run it", "text": "One command with a few options. The defaults keep 30 seconds at up to 1080p."},
+        {"node": "find", "title": "Find the videos", "text": "Your paths, or your newest recordings. A wrong path stops the run before any work starts."},
+        {"node": "each", "title": "One at a time", "text": "Like n8n's Loop Over Items: each video goes through the same steps, then the loop takes the next."},
+        {"node": "probe", "title": "Look inside first", "text": "[[ffprobe]] reports the length, the height and the number of audio tracks. Every choice that follows uses these three numbers."},
+        {"node": "long", "title": "Cut or keep?", "text": "A video longer than N seconds is cut. A shorter one is kept whole."},
+        {"node": "window", "title": "Seek from the end", "text": "`-sseof -30` starts reading 30 seconds before the end, so the rest of the recording is skipped."},
+        {"node": "keep-all", "title": "Short clips stay whole", "text": "No seek: the whole clip is compressed, so every result looks the same."},
+        {"node": "make", "title": "Make the clip", "text": "A free name, then ffmpeg. Open this step to see how the size and the sound are handled."},
+        {"node": "verify", "title": "Read it back", "text": "The new file is probed and printed, then the loop moves to the next video."},
+        {"node": "done", "title": "Finished", "text": "New clips in the output folder, originals untouched."}
+      ],
+      "runs": [
+        {
+          "id": "two-clips",
+          "name": "Two recordings, one of them short",
+          "steps": [
+            {"node": "start", "note": "--latest 2 --match Game"},
+            {"node": "find", "items": 2, "note": "two recordings found"},
+            {"node": "each", "out": "loop", "items": 1, "note": "boss-fight.mp4 first"},
+            {"node": "probe", "items": 1, "note": "184.2 s, 1440p, 2 audio tracks", "data": {"output": {"duration": 184.2, "height": 1440, "audio_tracks": 2}}},
+            {"node": "long", "out": "yes", "items": 1},
+            {"node": "window", "items": 1},
+            {"node": "make", "items": 1},
+            {"node": "verify", "items": 1, "note": "30.0 s, 1080p, 11.8 MB"},
+            {"node": "each", "out": "loop", "items": 1, "note": "quick-win.mp4 next"},
+            {"node": "probe", "items": 1, "note": "21.6 s, 1080p, 1 audio track", "data": {"output": {"duration": 21.6, "height": 1080, "audio_tracks": 1}}},
+            {"node": "long", "out": "no", "items": 1, "note": "shorter than 30 s"},
+            {"node": "keep-all", "items": 1},
+            {"node": "make", "items": 1},
+            {"node": "verify", "items": 1, "note": "21.6 s, 1080p, 7.9 MB"},
+            {"node": "each", "out": "done", "items": 2},
+            {"node": "done", "items": 2}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "encode",
+      "title": "Make the new clip",
+      "intro": "Called once per video. It picks the output name, then builds one ffmpeg command piece by piece and runs it.",
+      "nodes": [
+        {
+          "id": "enc-start",
+          "type": "trigger",
+          "name": "One video comes in",
+          "icon": "zap",
+          "col": 0,
+          "lane": 0,
+          "explain": {
+            "what": "Starts with one video and what the probe found about it, plus your options.",
+            "why": "Everything the command needs is known before it is built.",
+            "how": [
+              "Receive the source path, the length, the height and the number of audio tracks.",
+              "Start the command with quiet logging, so only errors are printed."
+            ],
+            "n8n": "The Execute Workflow Trigger at the top of a sub-workflow."
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [78, 79], "symbol": "def trim("}
+          ],
+          "data": {
+            "output": {"video": "C:/Users/you/Videos/Game/boss-fight.mp4", "duration": 184.2, "height": 1440, "audio_tracks": 2, "seconds": 30}
+          }
+        },
+        {
+          "id": "free-name",
+          "type": "action",
+          "name": "Pick a free file name",
+          "subtitle": "free_path()",
+          "icon": "file",
+          "col": 1,
+          "lane": 0,
+          "explain": {
+            "what": "Names the new file after the original plus the length kept. If that name is taken, it adds (2), (3) and so on.",
+            "why": "Running the script twice on the same video never overwrites the first clip.",
+            "how": [
+              "Start from `<name> - last 30s.mp4` in the output folder.",
+              "While that file exists, try `(2)`, then `(3)`.",
+              "Hand the free path to ffmpeg."
+            ],
+            "n8n": "A Code node that builds the file name, with a small loop until the name is free.",
+            "gotchas": [
+              "ffmpeg also gets `-n`, which refuses to overwrite, as a second guard."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [68, 75], "symbol": "def free_path"},
+            {"file": "trim_clip.py", "lines": [145, 145], "symbol": "free_path(out_dir"}
+          ],
+          "data": {
+            "input": {"stem": "boss-fight", "seconds": 30, "taken": ["boss-fight - last 30s.mp4"]},
+            "output": {"clip": "C:/Users/you/Desktop/boss-fight - last 30s (2).mp4"}
+          }
+        },
+        {
+          "id": "tall",
+          "type": "decision",
+          "name": "Taller than the size limit?",
+          "icon": "git-branch",
+          "col": 2,
+          "lane": 0,
+          "outputs": [
+            {"id": "yes", "label": "scale down"},
+            {"id": "no", "label": "keep size"}
+          ],
+          "explain": {
+            "what": "Checks the picture height against `--max-height` (1080 by default).",
+            "why": "A 1440p or 4K recording makes a big file that many chat apps shrink anyway. 1080p is a good size to share.",
+            "how": [
+              "Taller than the limit: take `yes` and scale down.",
+              "At or under the limit, or with `--max-height 0`: take `no` and keep the size."
+            ],
+            "n8n": "An IF node on `height > max_height`."
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [84, 88], "symbol": "height > max_height"}
+          ]
+        },
+        {
+          "id": "scale",
+          "type": "action",
+          "name": "Scale to the limit",
+          "subtitle": "scale=-2:1080",
+          "icon": "image",
+          "col": 3,
+          "lane": -1,
+          "explain": {
+            "what": "Adds a scale filter that resizes the picture to 1080 pixels tall and keeps its shape.",
+            "why": "A smaller picture makes a smaller file. The width follows the height, so nothing looks stretched.",
+            "how": [
+              "Add `[0:v:0]scale=-2:1080[v]` to the filter graph.",
+              "`-2` means: pick the width that keeps the shape, rounded to an even number.",
+              "Encode the scaled picture `[v]` instead of the original stream."
+            ],
+            "n8n": "An Edit Image node set to resize by height.",
+            "gotchas": [
+              "H.264 in the common `yuv420p` colour format needs even sizes, which is why the width is `-2` and not `-1`."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [86, 88], "symbol": "scale=-2"}
+          ],
+          "data": {
+            "input": {"height": 1440, "max_height": 1080},
+            "output": {"filter": "[0:v:0]scale=-2:1080[v]", "video": "[v]"}
+          }
+        },
+        {
+          "id": "audio",
+          "type": "decision",
+          "name": "How many audio tracks?",
+          "icon": "git-branch",
+          "col": 4,
+          "lane": 0,
+          "outputs": [
+            {"id": "one", "label": "one"},
+            {"id": "none", "label": "none"},
+            {"id": "many", "label": "two or more"}
+          ],
+          "explain": {
+            "what": "Looks at the track count from the probe and picks how the sound is carried over.",
+            "why": "Some recorders save game sound and your microphone as two separate [[Audio tracks]], and most players only play the first one.",
+            "how": [
+              "One track: carry it across.",
+              "Two or more: mix them into one track.",
+              "None: the clip has no sound, so no audio is mapped."
+            ],
+            "n8n": "A Switch node with three rules on the track count."
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [89, 94], "symbol": "audio_tracks > 1"}
+          ]
+        },
+        {
+          "id": "one-track",
+          "type": "action",
+          "name": "Keep the one track",
+          "subtitle": "-map 0:a:0",
+          "icon": "check",
+          "col": 5,
+          "lane": -1,
+          "explain": {
+            "what": "Maps the single sound track into the new clip, encoded as AAC.",
+            "why": "Nothing to mix: one track plays the same everywhere.",
+            "how": [
+              "Map `0:a:0`, the first audio track of the input.",
+              "Encode it as AAC at 160 kbit/s."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [89, 89], "symbol": "0:a:0"},
+            {"file": "trim_clip.py", "lines": [99, 100], "symbol": "-c:a"}
+          ]
+        },
+        {
+          "id": "mix",
+          "type": "action",
+          "name": "Mix the tracks into one",
+          "subtitle": "amix",
+          "icon": "merge",
+          "col": 5,
+          "lane": 1,
+          "explain": {
+            "what": "Mixes every audio track into one, each at its own volume, so game sound and voice are both heard in any player.",
+            "why": "Most players and phones only play the first track. Without the mix, your voice would be silently lost.",
+            "how": [
+              "List every track: `[0:a:0][0:a:1]`.",
+              "Add `amix=inputs=2:normalize=0[a]` to the filter graph.",
+              "Encode the mixed track `[a]` as AAC."
+            ],
+            "n8n": "A Merge node that combines two inputs into one item.",
+            "gotchas": [
+              "Without `normalize=0`, amix lowers each input so the sum cannot clip, which makes the whole mix quieter."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [90, 94], "symbol": "amix=inputs"}
+          ],
+          "data": {
+            "input": {"audio_tracks": 2},
+            "output": {"filter": "[0:a:0][0:a:1]amix=inputs=2:normalize=0[a]", "audio": "[a]"}
+          }
+        },
+        {
+          "id": "encode",
+          "type": "action",
+          "name": "Encode as H.264 and AAC",
+          "subtitle": "libx264, crf 23",
+          "icon": "code",
+          "col": 6,
+          "lane": 0,
+          "explain": {
+            "what": "Finishes the command: the video as H.264 at the chosen quality, the sound as AAC, and the file laid out so it starts playing before it has fully loaded.",
+            "why": "H.264 and AAC in an MP4 play almost everywhere: phones, browsers and chat apps.",
+            "how": [
+              "Join the filters, if any, into one `-filter_complex`.",
+              "Video: `libx264`, preset `slow`, [[CRF]] 23, `yuv420p` colour.",
+              "Audio, when there is any: AAC at 160 kbit/s.",
+              "`+faststart` moves the index to the front of the file; `-n` refuses to overwrite."
+            ],
+            "n8n": "The settings panel of a node: nothing runs yet, the options are only collected."
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [95, 101], "symbol": "libx264"}
+          ],
+          "data": {
+            "output": {
+              "command": "ffmpeg -hide_banner -loglevel error -nostats -sseof -30 -i boss-fight.mp4 -filter_complex \"[0:v:0]scale=-2:1080[v];[0:a:0][0:a:1]amix=inputs=2:normalize=0[a]\" -map [v] -c:v libx264 -preset slow -crf 23 -pix_fmt yuv420p -map [a] -c:a aac -b:a 160k -movflags +faststart -n \"boss-fight - last 30s (2).mp4\""
+            }
+          }
+        },
+        {
+          "id": "run",
+          "type": "external",
+          "name": "Run ffmpeg",
+          "subtitle": "subprocess.run",
+          "icon": "terminal",
+          "col": 7,
+          "lane": 0,
+          "explain": {
+            "what": "Runs the finished command and waits for it. [[ffmpeg]] reads the original and writes the new MP4.",
+            "why": "This is the only step that does real work; every step before it only built the command.",
+            "how": [
+              "Run ffmpeg with the full list of arguments.",
+              "Wait until it finishes.",
+              "If ffmpeg fails, `check=True` stops the script with an error."
+            ],
+            "n8n": "An Execute Command node.",
+            "gotchas": [
+              "Preset `slow` trades encoding time for a smaller file, so it takes noticeably longer than ffmpeg's default `medium`."
+            ]
+          },
+          "code": [
+            {"file": "trim_clip.py", "lines": [101, 102], "symbol": "subprocess.run(cmd, check=True)"}
+          ],
+          "data": {
+            "output": {"clip": "C:/Users/you/Desktop/boss-fight - last 30s (2).mp4"}
+          }
+        }
+      ],
+      "edges": [
+        {"from": "enc-start", "to": "free-name"},
+        {"from": "free-name", "to": "tall"},
+        {"from": "tall", "out": "yes", "to": "scale"},
+        {"from": "tall", "out": "no", "to": "audio"},
+        {"from": "scale", "to": "audio"},
+        {"from": "audio", "out": "one", "to": "one-track"},
+        {"from": "audio", "out": "none", "to": "encode"},
+        {"from": "audio", "out": "many", "to": "mix"},
+        {"from": "one-track", "to": "encode"},
+        {"from": "mix", "to": "encode"},
+        {"from": "encode", "to": "run"}
+      ],
+      "tour": [
+        {"node": "enc-start", "title": "One video in", "text": "The video and the three numbers the probe found: length, height and audio tracks."},
+        {"node": "free-name", "title": "A name that is free", "text": "`boss-fight - last 30s.mp4`, or `(2)` when that one exists already."},
+        {"node": "tall", "title": "Too tall?", "text": "Anything taller than 1080p is scaled down. Smaller recordings keep their size."},
+        {"node": "scale", "title": "Scale, keep the shape", "text": "The width follows the height and stays even, which H.264 needs."},
+        {"node": "audio", "title": "How much sound?", "text": "A Switch on the track count: one, none, or two and more."},
+        {"node": "one-track", "title": "One track", "text": "Carried across as AAC."},
+        {"node": "mix", "title": "Several tracks", "text": "Mixed into one, so a player that only plays the first track still has your voice."},
+        {"node": "encode", "title": "The settings", "text": "H.264 at [[CRF]] 23, AAC sound, and `+faststart` so the clip starts playing at once."},
+        {"node": "run", "title": "Run it", "text": "ffmpeg writes the new file. Back on the main canvas, the result is checked."}
+      ],
+      "runs": [
+        {
+          "id": "game-and-mic",
+          "name": "A 1440p recording with game and mic tracks",
+          "steps": [
+            {"node": "enc-start", "items": 1},
+            {"node": "free-name", "items": 1, "note": "the first name is taken, so (2)"},
+            {"node": "tall", "out": "yes", "items": 1, "note": "1440 is over 1080"},
+            {"node": "scale", "items": 1},
+            {"node": "audio", "out": "many", "items": 1, "note": "2 tracks"},
+            {"node": "mix", "items": 1},
+            {"node": "encode", "items": 1},
+            {"node": "run", "items": 1}
+          ]
+        }
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "ffmpeg",
+      "plain": "A free command-line program that reads, cuts, converts and compresses video and audio.",
+      "n8n": "The engine behind an Execute Command node in this flow."
+    },
+    {
+      "term": "ffprobe",
+      "plain": "ffmpeg's companion: it only reads a file and reports what is inside, such as the length, the picture size and the streams."
+    },
+    {
+      "term": "Audio tracks",
+      "plain": "Separate sound streams inside one video file, such as game sound on one track and a microphone on another.",
+      "example": "A recording with 2 audio tracks often plays only the game sound in a phone's player."
+    },
+    {
+      "term": "-sseof",
+      "plain": "An ffmpeg input option: start reading this many seconds before the end of the file.",
+      "example": "`-sseof -30` keeps the last 30 seconds."
+    },
+    {
+      "term": "CRF",
+      "plain": "Constant Rate Factor, the quality dial of the H.264 encoder. Lower is sharper and bigger; 23 is the default.",
+      "example": "Around 18 looks close to the original; 28 is visibly softer but much smaller."
+    }
+  ],
+  "outOfScope": [
+    "How the Windows registry lookup for the Videos and Desktop folders works (`shell_folder`).",
+    "Installing ffmpeg."
+  ]
+}

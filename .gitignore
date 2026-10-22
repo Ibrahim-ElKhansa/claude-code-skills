@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+node_modules/
+# explain-n8n writes these when it builds a page; they never belong in the repo.
+page.html
+preview.html
+flow.built.json

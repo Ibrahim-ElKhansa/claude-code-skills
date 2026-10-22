@@ -1,0 +1,8 @@
+{
+  "name": "usage-watch",
+  "version": "0.1.0",
+  "description": "Adds /usage-now and /cost-now, and has Claude give a one-line heads-up when the five-hour usage window passes 80% or the context window passes 70% and 85%",
+  "author": { "name": "Ibrahim El Khansa" },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "open-choices",
+  "version": "1.0.0",
+  "description": "Turns a wide open choice into a browsable page of many options on shelves, with Want and Maybe marks that Claude reads back afterwards.",
+  "author": { "name": "Ibrahim El Khansa", "url": "https://ibrahimelkhansa.com" },
+  "homepage": "https://ibrahimelkhansa.com/claude-code-skills/open-choices",
+  "repository": "https://github.com/Ibrahim-ElKhansa/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["decisions", "picker", "planning"]
+}

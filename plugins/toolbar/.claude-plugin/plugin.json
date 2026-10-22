@@ -1,0 +1,8 @@
+{
+  "name": "toolbar",
+  "version": "0.1.0",
+  "description": "A band above the prompt: this chat's pixel character and its helper agents, a files-changed summary, buttons that unfold background tasks, helpers, scheduled wake-ups and other sessions, and the context window as a stacked bar (/context-bar toggles the bar)",
+  "author": { "name": "Ibrahim El Khansa" },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

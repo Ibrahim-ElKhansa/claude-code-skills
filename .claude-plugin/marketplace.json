@@ -1,0 +1,52 @@
+{
+  "name": "ibrahim-elkhansa",
+  "owner": {
+    "name": "Ibrahim El Khansa",
+    "url": "https://ibrahimelkhansa.com"
+  },
+  "description": "Claude Code skills and mods by Ibrahim El Khansa. They include a market study, code explained as n8n style workflows, a picker page for open choices, a game clip trimmer, a toolbar above the prompt and a usage watcher.",
+  "plugins": [
+    {
+      "name": "study-competition",
+      "source": "./plugins/study-competition",
+      "description": "Studies the market around a business idea, with competitors, prices, their ads and bad reviews, the gaps nobody fills, selling points and video hooks, and where the idea already works abroad.",
+      "version": "1.0.0",
+      "category": "research"
+    },
+    {
+      "name": "explain-n8n",
+      "source": "./plugins/explain-n8n",
+      "description": "Explains a piece of code as an interactive n8n style workflow page, with steps, branches, loops, real code lines and example runs.",
+      "version": "1.0.0",
+      "category": "development"
+    },
+    {
+      "name": "open-choices",
+      "source": "./plugins/open-choices",
+      "description": "Turns a wide open choice into a browsable page of many options on shelves, with Want and Maybe marks that Claude reads back afterwards.",
+      "version": "1.0.0",
+      "category": "productivity"
+    },
+    {
+      "name": "trim-clip",
+      "source": "./plugins/trim-clip",
+      "description": "Keeps the last 30 seconds (or any length) of a game clip or recording as a compressed 1080p MP4, without touching the original.",
+      "version": "1.0.0",
+      "category": "media"
+    },
+    {
+      "name": "toolbar",
+      "source": "./plugins/toolbar",
+      "description": "A mod that adds a band above the prompt with the chat's pixel character and its helper agents, a files changed summary, and the context window as a stacked bar.",
+      "version": "0.1.0",
+      "category": "interface"
+    },
+    {
+      "name": "usage-watch",
+      "source": "./plugins/usage-watch",
+      "description": "A mod that answers /usage-now and /cost-now in chat, and has Claude mention it when the five hour window passes 80% or the context passes 70% and 85%.",
+      "version": "0.1.0",
+      "category": "interface"
+    }
+  ]
+}

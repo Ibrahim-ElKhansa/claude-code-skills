@@ -1,0 +1,10 @@
+{
+  "name": "trim-clip",
+  "version": "1.0.0",
+  "description": "Keeps the last 30 seconds (or any length) of a game clip or recording as a compressed 1080p MP4, without touching the original.",
+  "author": { "name": "Ibrahim El Khansa", "url": "https://ibrahimelkhansa.com" },
+  "homepage": "https://ibrahimelkhansa.com/claude-code-skills/trim-clip",
+  "repository": "https://github.com/Ibrahim-ElKhansa/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["video", "ffmpeg", "gaming"]
+}
