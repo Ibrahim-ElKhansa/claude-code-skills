@@ -3,14 +3,14 @@
 Skills and mods I built for my own Claude Code setup. More about each one is on
 [ibrahimelkhansa.com/claude-code-skills](https://ibrahimelkhansa.com/claude-code-skills).
 
-| Name | Type | What it does |
-|---|---|---|
-| [study-competition](plugins/study-competition/skills/study-competition) | Skill | Studies the market around a business idea. It finds the competitors and their prices, their ads, what their customers complain about, the gaps nobody fills, and where the idea already works abroad. It ends with selling points, video hooks and advice. |
-| [explain-n8n](plugins/explain-n8n/skills/explain-n8n) | Skill | Explains a piece of code as an interactive workflow page in the style of n8n, with steps, branches, loops, the real code lines and example runs you can play. |
-| [open-choices](plugins/open-choices/skills/open-choices) | Skill | Turns a wide open choice into a page of dozens of options on shelves. You mark Want or Maybe, and Claude reads your marks back. |
-| [trim-clip](plugins/trim-clip/skills/trim-clip) | Skill | Keeps the last 30 seconds of a game clip (or any length you ask for) as a small 1080p MP4 on your Desktop. The original is never touched. |
-| [toolbar](plugins/toolbar) | Mod | Adds a band above the prompt with the chat's pixel character and its helper agents, what files changed, and the context window as a stacked bar. |
-| [usage-watch](plugins/usage-watch) | Mod | Answers `/usage-now` and `/cost-now` in chat, and has Claude tell you when the five hour window passes 80% or the context passes 70% and 85%. |
+| | Name | Type | What it does |
+|---|---|---|---|
+| <img src="plugins/study-competition/.claude-plugin/icon.png" width="40" alt=""> | [study-competition](plugins/study-competition/skills/study-competition) | Skill | Studies the market around a business idea. It finds the competitors and their prices, their ads, what their customers complain about, the gaps nobody fills, and where the idea already works abroad. It ends with selling points, video hooks and advice. |
+| <img src="plugins/explain-n8n/.claude-plugin/icon.png" width="40" alt=""> | [explain-n8n](plugins/explain-n8n/skills/explain-n8n) | Skill | Explains a piece of code as an interactive workflow page in the style of n8n, with steps, branches, loops, the real code lines and example runs you can play. |
+| <img src="plugins/open-choices/.claude-plugin/icon.png" width="40" alt=""> | [open-choices](plugins/open-choices/skills/open-choices) | Skill | Turns a wide open choice into a page of dozens of options on shelves. You mark Want or Maybe, and Claude reads your marks back. |
+| <img src="plugins/trim-clip/.claude-plugin/icon.png" width="40" alt=""> | [trim-clip](plugins/trim-clip/skills/trim-clip) | Skill | Keeps the last 30 seconds of a game clip (or any length you ask for) as a small 1080p MP4 on your Desktop. The original is never touched. |
+| <img src="plugins/toolbar/.claude-plugin/icon.png" width="40" alt=""> | [toolbar](plugins/toolbar) | Mod | Adds a band above the prompt with the chat's pixel character and its helper agents, what files changed, and the context window as a stacked bar. |
+| <img src="plugins/usage-watch/.claude-plugin/icon.png" width="40" alt=""> | [usage-watch](plugins/usage-watch) | Mod | Answers `/usage-now` and `/cost-now` in chat, and has Claude tell you when the five hour window passes 80% or the context passes 70% and 85%. |
 
 ## Install
 
