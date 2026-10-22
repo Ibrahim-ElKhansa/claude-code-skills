@@ -1,0 +1,10 @@
+{
+  "name": "netlify-bot-shield",
+  "version": "1.0.0",
+  "description": "Blocks vulnerability-scanner probes such as /.env and /wp-login.php on a Netlify site with one small edge function, and shows how to see real visitors in the analytics.",
+  "author": { "name": "Ibrahim El Khansa", "url": "https://ibrahimelkhansa.com" },
+  "homepage": "https://ibrahimelkhansa.com/claude-code-skills/netlify-bot-shield",
+  "repository": "https://github.com/Ibrahim-ElKhansa/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["netlify", "security", "bots", "analytics", "edge-functions"]
+}

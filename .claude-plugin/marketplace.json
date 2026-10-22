@@ -4,7 +4,7 @@
     "name": "Ibrahim El Khansa",
     "url": "https://ibrahimelkhansa.com"
   },
-  "description": "Claude Code skills and mods by Ibrahim El Khansa. They include a market study, a lead finder, code explained as n8n style workflows, a picker page for open choices, a game clip trimmer, a toolbar above the prompt and a usage watcher.",
+  "description": "Claude Code skills and mods by Ibrahim El Khansa. They include a market study, a lead finder, code explained as n8n style workflows, a picker page for open choices, a game clip trimmer, a bot shield for Netlify sites, a toolbar above the prompt and a usage watcher.",
   "plugins": [
     {
       "name": "study-competition",
@@ -47,6 +47,13 @@
       "description": "Reviews how legally safe a project is: privacy law, the current terms of every outside service it uses, open-source and asset licences, consumer and content rules, and AI rules, for the countries it is aimed at. Not legal advice.",
       "version": "1.0.0",
       "category": "compliance"
+    },
+    {
+      "name": "netlify-bot-shield",
+      "source": "./plugins/netlify-bot-shield",
+      "description": "Blocks vulnerability-scanner probes such as /.env and /wp-login.php on a Netlify site with one small edge function, and shows how to see real visitors in the analytics.",
+      "version": "1.0.0",
+      "category": "security"
     },
     {
       "name": "toolbar",
