@@ -94,8 +94,13 @@ normal pages, and costs one web request per probe, which the probe costs anyway.
      self-hosted Umami.
 9. **Commit and deploy** the way the repo deploys (a push to the production branch, or `netlify deploy
    --prod` for a site with no git link). A production deploy may cost credits on Netlify's credit plans, so
-   say so before it. After it is live, run `probe.mjs` against the production URL with the same `--real` and
-   `--safe` lists.
+   say so before it. After it is live, run `probe.mjs` once against the production URL with the same `--real`
+   and `--safe` lists. Against a live site it is gentle on its own (4 probe paths, 1.5 seconds apart). Never
+   pass `--full` to a live site, never run it twice in a row, and never loop it over several sites at once: a
+   burst of scanner-looking requests is what Netlify's edge protection blocks, and it then drops every
+   connection from that IP to every Netlify-hosted site for a while (seen 2026-10-22: about 60 requests in
+   seconds cut the IP off for about 6 minutes). The sites stay up for everyone else. With the Netlify connector or CLI, the request log is the
+   other proof: the probe paths show `edge_function_invocations` and status 403, with no function run.
 10. **Report:** leaks found (or none), the patterns blocked, any removed for a collision, the local and live
     probe results, and a reminder to compare "Top resources not found" a day later.
 
