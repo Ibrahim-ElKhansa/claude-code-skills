@@ -1,0 +1,20 @@
+{
+  "name": "legal-review",
+  "version": "1.0.0",
+  "description": "Reviews how legally safe a project is: privacy law, the current terms of every outside service it uses, open-source and asset licences, consumer and content rules, and AI rules, for the countries it is aimed at. Not legal advice.",
+  "author": {
+    "name": "Ibrahim El Khansa",
+    "url": "https://ibrahimelkhansa.com"
+  },
+  "homepage": "https://ibrahimelkhansa.com/claude-code-skills/legal-review",
+  "repository": "https://github.com/Ibrahim-ElKhansa/claude-code-skills",
+  "license": "MIT",
+  "keywords": [
+    "legal",
+    "privacy",
+    "gdpr",
+    "licenses",
+    "terms of service",
+    "compliance"
+  ]
+}

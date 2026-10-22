@@ -42,6 +42,13 @@
       "category": "media"
     },
     {
+      "name": "legal-review",
+      "source": "./plugins/legal-review",
+      "description": "Reviews how legally safe a project is: privacy law, the current terms of every outside service it uses, open-source and asset licences, consumer and content rules, and AI rules, for the countries it is aimed at. Not legal advice.",
+      "version": "1.0.0",
+      "category": "compliance"
+    },
+    {
       "name": "toolbar",
       "source": "./plugins/toolbar",
       "description": "A mod that adds a band above the prompt with the chat's pixel character and its helper agents, a files changed summary, and the context window as a stacked bar.",
