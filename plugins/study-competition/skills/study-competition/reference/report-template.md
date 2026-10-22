@@ -106,3 +106,5 @@ _Written {date} for the market study of {niche}. Built from {sources in short}._
   {pain}".
 - Write 2 or 3 hooks per top complaint, in the launch market's language and in English.
 - Never promise what the product does not do. A hook for a feature not built yet is marked "needs {feature}".
+- No invented numbers in hooks ("20 more sites", "1,000 posts"). A number in a hook is one the study found or the
+  business states; otherwise write it without a number.

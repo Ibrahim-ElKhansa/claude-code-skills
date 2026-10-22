@@ -6,6 +6,7 @@ Skills and mods I built for my own Claude Code setup. More about each one is on
 | | Name | Type | What it does |
 |---|---|---|---|
 | <img src="plugins/study-competition/.claude-plugin/icon.png" width="40" alt=""> | [study-competition](plugins/study-competition/skills/study-competition) | Skill | Studies the market around a business idea. It finds the competitors and their prices, their ads, what their customers complain about, the gaps nobody fills, and where the idea already works abroad. It ends with selling points, video hooks and advice. |
+| <img src="plugins/find-leads/.claude-plugin/icon.png" width="40" alt=""> | [find-leads](plugins/find-leads/skills/find-leads) | Skill | Finds leads for a business idea. It looks for businesses that fit, people asking for this kind of help in public, competitors' unhappy customers, and businesses hiring for the job your product does. It checks each one, finds a public way to reach it, and drafts one short first message for you to send. It never sends anything. |
 | <img src="plugins/explain-n8n/.claude-plugin/icon.png" width="40" alt=""> | [explain-n8n](plugins/explain-n8n/skills/explain-n8n) | Skill | Explains a piece of code as an interactive workflow page in the style of n8n, with steps, branches, loops, the real code lines and example runs you can play. |
 | <img src="plugins/open-choices/.claude-plugin/icon.png" width="40" alt=""> | [open-choices](plugins/open-choices/skills/open-choices) | Skill | Turns a wide open choice into a page of dozens of options on shelves. You mark Want or Maybe, and Claude reads your marks back. |
 | <img src="plugins/trim-clip/.claude-plugin/icon.png" width="40" alt=""> | [trim-clip](plugins/trim-clip/skills/trim-clip) | Skill | Keeps the last 30 seconds of a game clip (or any length you ask for) as a small 1080p MP4 on your Desktop. The original is never touched. |
@@ -37,13 +38,17 @@ skill's folder (the one with `SKILL.md`) to `~/.claude/skills/<name>/` and run i
   available. Without it, they write a single HTML file you open in your browser.
 - **trim-clip** needs Python 3 and ffmpeg. It works on Windows, macOS and Linux.
 - **study-competition** needs web search. A browser tool (such as Claude in Chrome) and the
-  [watch](https://github.com/mathiaschu/claude-video) skill let it read ad libraries and watch video ads, but both are
+  [watch](https://github.com/mathiaschu/claude-video) skill let it read ad libraries and watch video ads, and
+  [REA](https://github.com/morluto/rea) lets it look inside one competitor feature. All three are optional.
+- **find-leads** needs web search. A browser tool lets it check Instagram, Facebook, ad libraries and a few LinkedIn
+  pages, and a paid lead tool key (Apollo, Hunter, Apify, Clay) is used only after a yes for that run. Both are
   optional.
 
 ## What they will not do
 
 None of these skills pay for anything, sign in, post or send on your behalf. study-competition only reads public pages,
-and asks before it looks at pages in your browser. trim-clip writes a new file and never changes or deletes the
+and asks before it looks at pages in your browser. find-leads drafts messages but never sends one, and for private
+people it keeps only their public username, the post link and what they asked. trim-clip writes a new file and never changes or deletes the
 recording. The mods only draw and read what Claude Code already knows about the session. They send nothing anywhere.
 
 ## License

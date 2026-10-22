@@ -39,6 +39,8 @@ Search in the launch market's languages and in English. Record each fact with it
   show up in search. Unprompted complaints ("is X a scam?", "anyone else had this with Y?") are often the most
   honest evidence.
 - Old threads count, but mark their date: a 2021 complaint may be fixed.
+- reddit.com refuses plain page reads. Use search results that quote threads, public copies of a thread that search
+  turns up, or the browser if allowed.
 
 ## Social comments
 

@@ -1,0 +1,10 @@
+{
+  "name": "find-leads",
+  "version": "1.0.0",
+  "description": "Finds leads for a business idea (businesses that fit, people asking for help, rivals' unhappy customers, businesses hiring for the job), checks each one, and drafts one tailored first message per lead. It never sends anything.",
+  "author": { "name": "Ibrahim El Khansa", "url": "https://ibrahimelkhansa.com" },
+  "homepage": "https://ibrahimelkhansa.com/claude-code-skills/find-leads",
+  "repository": "https://github.com/Ibrahim-ElKhansa/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["lead generation", "prospects", "sales", "startup"]
+}

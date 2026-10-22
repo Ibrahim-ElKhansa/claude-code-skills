@@ -47,6 +47,9 @@ You can also just ask: "is this a competitor?" with an ad link, or "study the co
   It needs ffmpeg, yt-dlp and Whisper. Without it, videos are read from their page and caption only.
 - **A browser tool** (for example Claude in Chrome) lets it read ad libraries, Google Trends and social comments. It
   asks before each run and only looks. Without it, the report gives you the links to open yourself.
+- **REA, Reverse Engineer Anything** (https://github.com/morluto/rea) lets it offer an optional "how it works" look
+  at one rival feature: from the rival's public website, or from an app you are authorized to examine. Install it
+  only from its official repo or the `rea-agents` npm package; copies with malware circulate.
 
 ## What it never does
 

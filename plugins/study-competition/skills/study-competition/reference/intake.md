@@ -6,7 +6,9 @@
    read that too. Do not read code to guess the business.
 2. Write the niche in one line: **what** is sold, **to whom**, **where**, **price**, **stage**. Example: "A meal
    prep delivery service for office workers in Austin, $12 a meal, live since March 2026."
-3. Note any rivals the README already names, and any existing rivals folder or earlier `market-study.md`.
+3. Note any rivals the README already names, and any existing rivals folder or earlier `market-study.md`. Earlier
+   rival notes elsewhere (a path the README points to, a sister project's competitors folder) are read too: hand
+   them to the helpers as "what we already know", so they look only for what is new.
 4. In the first dialog, show the line and ask: "Is this right?" with options "Yes", "Mostly, with a fix (say what)",
    and "No, it's something else". Ask only the intake questions below that the README does not answer.
 

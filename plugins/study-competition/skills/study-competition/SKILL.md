@@ -1,6 +1,6 @@
 ---
 name: study-competition
-description: Study the market around a business or startup idea and report what to do with it. Finds the current competitors (local and online), their prices, their paid ads and their negative reviews, groups the complaints, finds the gaps nobody fills, turns rivals' weak spots into selling points and video hooks, checks Google Trends, finds where the idea already works abroad (the "global Hormozi" check), and advises improving the idea or pivoting to a new one. Works inside a repo (reads the niche from its README) or with no repo at all (asks about the idea and where it launches). Also checks a single rival from a pasted ad, video or link. Use when someone types /study-competition, or says "study the competition", "competitor research", "market study", "market analysis", "who competes with ...", "is this a competitor?", "check this ad / this company", "find gaps in the market", "what are people complaining about in this niche", "turn their bad reviews into our selling points", "where else is this a niche", "who does this abroad", "Hormozi theory", "find the Chinese version of ...".
+description: Study the market around a business or startup idea and report what to do with it. Finds the current competitors (local and online), their prices, their paid ads and their negative reviews, groups the complaints, finds the gaps nobody fills, turns rivals' weak spots into selling points and video hooks, checks Google Trends, finds where the idea already works abroad (the "global Hormozi" check), and advises improving the idea or pivoting to a new one. Works inside a repo (reads the niche from its README) or with no repo at all (asks about the idea and where it launches). Also checks a single rival from a pasted ad, video or link, and, with REA installed, can look inside one rival feature (how it works). Use when someone types /study-competition, or says "study the competition", "competitor research", "market study", "market analysis", "who competes with ...", "is this a competitor?", "check this ad / this company", "find gaps in the market", "what are people complaining about in this niche", "turn their bad reviews into our selling points", "where else is this a niche", "who does this abroad", "Hormozi theory", "find the Chinese version of ...", "how does their feature work", "reverse engineer their feature".
 argument-hint: "[quick|full|rival|abroad] [idea, link or nothing]"
 ---
 
@@ -126,9 +126,18 @@ From the helpers' findings, the ads, the videos, Trends and the abroad stage:
    turn it into a short video hook (the first line of an ad). Write hooks per `reference/report-template.md`. A hook
    that names a rival is allowed, but it is flagged: "names a rival, check your country's ad rules and the platform's
    policy first".
-4. **Advice:** for a live business or a set idea, the 3 to 5 changes most likely to win customers, each tied to a gap
+4. **Advice:** first check what the business already does (its README, its to-do list, its feature notes) so no
+   advice asks for something it already has; when it already has it, the advice is to say so in its marketing. Then,
+   for a live business or a set idea, the 3 to 5 changes most likely to win customers, each tied to a gap
    or a complaint. Then 2 or 3 new or pivoted ideas the gaps point to, each with why it has a chance and the main
    risk. For pure market research, the advice is the opportunities ranked.
+
+## Step 8b · How it works (optional, needs REA)
+
+If REA ("Reverse Engineer Anything") is installed, offer, in one question, to look inside 1 or 2 rival features
+that matter. Follow `reference/how-it-works.md`: a rival's public website only as any visitor sees it, and a rival's
+app only after the person confirms they are authorized to examine it. Never copy a rival's code or data. Without REA,
+skip this silently.
 
 ## Step 9 · Write the files
 

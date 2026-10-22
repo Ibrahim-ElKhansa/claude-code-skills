@@ -4,14 +4,21 @@
     "name": "Ibrahim El Khansa",
     "url": "https://ibrahimelkhansa.com"
   },
-  "description": "Claude Code skills and mods by Ibrahim El Khansa. They include a market study, code explained as n8n style workflows, a picker page for open choices, a game clip trimmer, a toolbar above the prompt and a usage watcher.",
+  "description": "Claude Code skills and mods by Ibrahim El Khansa. They include a market study, a lead finder, code explained as n8n style workflows, a picker page for open choices, a game clip trimmer, a toolbar above the prompt and a usage watcher.",
   "plugins": [
     {
       "name": "study-competition",
       "source": "./plugins/study-competition",
       "description": "Studies the market around a business idea, with competitors, prices, their ads and bad reviews, the gaps nobody fills, selling points and video hooks, and where the idea already works abroad.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "category": "research"
+    },
+    {
+      "name": "find-leads",
+      "source": "./plugins/find-leads",
+      "description": "Finds leads for a business idea, checks each one, and drafts one tailored first message per lead. It never sends anything.",
+      "version": "1.0.0",
+      "category": "sales"
     },
     {
       "name": "explain-n8n",
