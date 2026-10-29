@@ -12,6 +12,7 @@ Skills and mods I built for my own Claude Code setup. More about each one is on
 | <img src="plugins/trim-clip/.claude-plugin/icon.png" width="40" alt=""> | [trim-clip](plugins/trim-clip/skills/trim-clip) | Skill | Keeps the last 30 seconds of a game clip (or any length you ask for) as a small 1080p MP4 on your Desktop. The original is never touched. |
 | <img src="plugins/netlify-bot-shield/.claude-plugin/icon.png" width="40" alt=""> | [netlify-bot-shield](plugins/netlify-bot-shield/skills/netlify-bot-shield) | Skill | Blocks the bots that scan a Netlify site for `/.env`, `.git` folders, WordPress logins and PHP pages, with one small edge function that answers them with an empty 403. It checks for files that really leaked first, proves the block locally, and shows how to see your real visitors. |
 | <img src="plugins/legal-review/.claude-plugin/icon.png" width="40" alt=""> | [legal-review](plugins/legal-review/skills/legal-review) | Skill | Reviews how legally safe your project is, for the countries it is aimed at: privacy law, the current terms of every outside service it uses (read live and quoted), open-source and asset licences, consumer and content rules, and AI rules. Every finding is ranked and cites a file and line or a source, and it offers fixes. Not legal advice. |
+| <img src="plugins/session-advisor/.claude-plugin/icon.png" width="40" alt=""> | [session-advisor](plugins/session-advisor/skills/session-advisor) | Skill | Runs in a second session beside the one doing the work. It reads that session's log, explains each question it asks you, recommends an answer with the text to type, and checks its claims against your files before you agree. It never messages the working session. |
 | <img src="plugins/toolbar/.claude-plugin/icon.png" width="40" alt=""> | [toolbar](plugins/toolbar) | Mod | Adds a band above the prompt with the chat's pixel character and its helper agents, what files changed, and the context window as a stacked bar. |
 | <img src="plugins/usage-watch/.claude-plugin/icon.png" width="40" alt=""> | [usage-watch](plugins/usage-watch) | Mod | Answers `/usage-now` and `/cost-now` in chat, and has Claude tell you when the five hour window passes 80% or the context passes 70% and 85%. |
 
@@ -39,6 +40,8 @@ skill's folder (the one with `SKILL.md`) to `~/.claude/skills/<name>/` and run i
 - **explain-n8n and open-choices** publish their page as a private claude.ai artifact when Claude's artifact tool is
   available. Without it, they write a single HTML file you open in your browser.
 - **trim-clip** needs Python 3 and ffmpeg. It works on Windows, macOS and Linux.
+- **session-advisor** needs Python 3.7 or later for its log reader. It reads Claude Code's own session logs, whose
+  format can change between versions.
 - **netlify-bot-shield** needs Node 18 or later and the Netlify CLI (`npm install -g netlify-cli`) for its local
   test. It reads the site's recent traffic only when a Netlify connector or the CLI is signed in.
 - **study-competition** needs web search. A browser tool (such as Claude in Chrome) and the

@@ -1,0 +1,10 @@
+{
+  "name": "session-advisor",
+  "version": "1.0.0",
+  "description": "A second session that reads a working session's log, explains each question it asks you, recommends answers and checks its claims. It never messages the working session.",
+  "author": { "name": "Ibrahim El Khansa", "url": "https://ibrahimelkhansa.com" },
+  "homepage": "https://ibrahimelkhansa.com/claude-code-skills/session-advisor",
+  "repository": "https://github.com/Ibrahim-ElKhansa/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["sessions", "review", "decisions"]
+}
