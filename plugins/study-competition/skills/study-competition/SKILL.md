@@ -29,7 +29,7 @@ Read the arguments first and pick one:
 The niche is: what is sold, to whom, where, at what price, and at what stage (an idea, live, or pure research).
 
 - **In a repo:** read the README (and a `docs/` overview or business notes if the README points to one). Write the
-  niche in one line, for example "A meal prep delivery service for office workers in Austin, $12 a meal, live since
+  niche in one line, for example "A meal prep delivery service for office workers in Austin, USD 12 a meal, live since
   March". Show
   it in the first dialog for the person to confirm or correct. Never start researching on an unconfirmed niche: an
   outdated README sends the whole study the wrong way.
